@@ -21,8 +21,8 @@ for coin in soup('tr')[1:]:
 	posi = list(filter(None, lista))
 #	print (posi)
 
-	b = csv.writer(open('bsoup.csv', 'a+'), delimiter =',')
-	if os.path.getsize('bsoup.csv') == 0:
+	b = csv.writer(open('crypto_timestamp.csv', 'a+'), delimiter =',')
+	if os.path.getsize('crypto_timestamp.csv') == 0:
 		b.writerow(['code','name', 'priceUSD', 'change24H', 'change7D', 'symbol', 'priceBTC', 'marketCap', 'volume24H', 'totalVolume', 'timestamp'])
 		b.writerow([posi[0],posi[1],posi[2],posi[3],posi[4],posi[5],posi[6],posi[7],posi[8],posi[9], datapronta])
 	else:
