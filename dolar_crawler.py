@@ -63,9 +63,9 @@ def formatacao(valormoeda,valoratual,valormudanca,valorpercentual,datapronta):
 
 #Escreve o CSV, no formato solicitado.
 def escreve(lista2):
-	file = open("dolar_data.csv", 'a+')
+	file = open("/lucasSampaio/crawler_dolar/dolar_data.csv", 'a+')
 	wr = csv.writer(file)
-	filesize = os.stat("dolar_data.csv").st_size
+	filesize = os.stat("/lucasSampaio/crawler_dolar/dolar_data.csv").st_size
 	if filesize == 0:
 		wr.writerow(['currency', 'value', 'change','perc', 'timestamp'])
 	wr.writerow(lista2)
