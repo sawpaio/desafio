@@ -53,9 +53,9 @@ def percentual(lista):
 
 def formatadata(data):
 	#print (time)
-	now = datetime.now()
-	datapronta = datetime.timestamp(now)
-	return datapronta
+        now = datetime.now()
+        datapronta = datetime.timestamp(now)
+        return datapronta
 
 def formatacao(valormoeda,valoratual,valormudanca,valorpercentual,datapronta):
 	lista2 = [valormoeda,valoratual,valormudanca,valorpercentual,datapronta]
@@ -63,12 +63,13 @@ def formatacao(valormoeda,valoratual,valormudanca,valorpercentual,datapronta):
 
 #Escreve o CSV, no formato solicitado.
 def escreve(lista2):
-	file = open("$PWD/lucasSampaio/crawler_dolar/dolar_data.csv", 'a+')
-	wr = csv.writer(file)
-	filesize = os.stat("$PWD/lucasSampaio/crawler_dolar/dolar_data.csv").st_size
-	if filesize == 0:
-		wr.writerow(['currency', 'value', 'change','perc', 'timestamp'])
-	wr.writerow(lista2)
+        cwd = os.getcwd()
+        file = open(cwd + "/lucasSampaio/crawler_dolar/dolar_data.csv", 'a+')
+        wr = csv.writer(file)
+        filesize = os.stat(cwd + "/lucasSampaio/crawler_dolar/dolar_data.csv").st_size
+        if filesize == 0:
+                wr.writerow(['currency', 'value', 'change','perc', 'timestamp'])
+        wr.writerow(lista2)
 
 def main():
 	leiturapagina()
