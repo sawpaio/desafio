@@ -1,79 +1,68 @@
 import requests
+from datetime import datetime
 import csv
 import os
-import datetime
 import time
 
-## Faz a Leitura da Página em HTML
-def leiturapagina():
-	requi = requests.get(url="https://m.investing.com/currencies/usd-brl", headers={'User-Agent':'curl/7.52.1'})
-	verifica(requi) ## Passa o HTML
-	formatadata(requi.headers["Date"])
-#	print(requi.text)
-#	formatadata(requi)
+path = os.getcwd()
 
-## Verifica se a requisição da página foi coletada.
-def verifica(requi):
-	if(requi.status_code == 200):
-		print("A requisição foi feita com sucesso.")
-		txt(requi)
-	else:
-		print("A requisição falhou")
+def moeda(html):
+	#verifica o titulo da moeda
+	aux = html.find("instrumentH1inlineblock") + 30
+	#coloca o titulo em um formato sem espaços
+	tipo_moeda = html[aux:aux+31]
 
-def txt(requi):
-	lista = requi.text
-	escreve(formatacao(moeda(lista),cotacao(lista),percentual(lista),mudanca(lista),formatadata(requi.headers["Date"])))
+	return tipo_moeda
 
-#Função para procurar as frases próximas ao desejado.
-def procurateste(texto):
-	posicao = texto.find("data-date-created")
-	if posicao >= 0:
-		print("Encontrou na posição %d" %posicao)
-		#print(texto[18586:18591])
+def cotacao(html):
+	#localiza cotacao
+	aux = html.find("lastInst pid-2103-last") + 30
+	#retira os espacos do valor obtido
+	cot = html[aux:aux+29].strip()
 
-def moeda(lista):
-	valormoeda = lista.find("instrumentH1inlineblock")+30
-#	print(valormoeda)
-	return (lista[valormoeda:valormoeda+31])
+	return cot
 
-def cotacao(lista):
-	valoratual = lista.find("lastInst pid-2103-last")+30
-#	print(valoratual)
-	return (lista[valoratual:valoratual+18])
+def mudanca(html):
+	#localiza mudanca
+	aux = html.find("pid-2103-pc") + 30
+	#retira os espaços da variavel
+	mud = html[aux:aux+20].strip()
 
-def mudanca(lista):
-	valormudanca = lista.find("pid-2103-pc") + 35
-#	print(valormudanca)
-	return (lista[valormudanca:valormudanca+20])
+	return mud;
 
-def percentual(lista):
-	valorpercentual = lista.find("pid-2103-pcp") + 35
-#	print(valorpercentual)
-	return (lista[valorpercentual:valorpercentual+8])
+def percentual(html):
+	#localiza percentual
+	aux = html.find("pid-2103-pcp") + 30
+	#retira os espaços da variavel
+	perc = html[aux:aux+10].strip()
 
-def formatadata(data):
-	#print (time)
-	datapronta = datetime.datetime.strptime(data[:-4],"%a, %d %b %Y %H:%M:%S")
-	#Formato atual da Data, nesse caso não é necessário colocar o desejado.
-	return datapronta
+	return perc
 
-def formatacao(valormoeda,valoratual,valormudanca,valorpercentual,datapronta):
-	lista2 = [valormoeda,valoratual,valormudanca,valorpercentual,datapronta]
-	return lista2
+def timestamp(r):
+    now = datetime.now()
+    time = datetime.timestamp(now)
 
-#Escreve o CSV, no formato solicitado.
-def escreve(lista2):
-        cwd = os.getcwd()
-	file = open(cwd + "/lucasSampaio/crawler_dolar/dolar_data.csv", 'a+')
-	wr = csv.writer(file)
-	filesize = os.stat(cwd + "/lucasSampaio/crawler_dolar/dolar_data.csv").st_size
-	if filesize == 0:
-		wr.writerow(['Moeda', 'Cotacao', 'Mudança','Percentual', 'Data'])
-	wr.writerow(lista2)
+    return time
+
+def gravar(saida):
+	#abertura do arquivo com append
+    arq = csv.writer(open(path + '/lucasSampaio/crawler_dolar/dolar_timestamp.csv', 'a+'), delimiter = ';')
+	#escrita da linha
+    if os.stat(path + '/lucasSampaio/crawler_dolar/dolar_timestamp.csv').st_size == 0:
+        arq.writerow(['currency', 'value', 'change', 'perc', 'timestamp'])
+
+    arq.writerow(saida)
 
 def main():
-	leiturapagina()
-	#print("Cotação atualizada.")
+	r = requests.get(url="https://m.investing.com/currencies/usd-brl", headers={'User-Agent':'curl/7.52.1'})
+	#r.text -> html todo
+	html = r.text
+	#armazena as variaveis em uma linha
+	saida = [moeda(html), cotacao(html), mudanca(html), percentual(html), timestamp(r)]
+
+	#chamada do metodo para armazenar no arquivo
+	gravar(saida)
+
+#if '__name__' == __main__:
 
 main()
-
