@@ -45,10 +45,13 @@ def timestamp(r):
     return time
 
 def gravar(saida):
-	#abertura do arquivo com append
-    arq = csv.writer(open(path + '/lucasSampaio/crawler_dolar/dolar_data.csv', 'a+'), delimiter = ',')
+    now = datetime.now()
+    
+    time = datetime.date(now)
+    #abertura do arquivo com append
+    arq = csv.writer(open(path + '/lucasSampaio/crawler_dolar/dolar_{}.csv'.format(time), '+a'), delimiter = ',')
 	#escrita da linha
-    if os.stat(path + '/lucasSampaio/crawler_dolar/dolar_data.csv').st_size == 0:
+    if os.stat(path + '/lucasSampaio/crawler_dolar/dolar_{}.csv'.format(time)).st_size == 0:
         arq.writerow(['currency', 'value', 'change', 'perc', 'timestamp'])
 
     arq.writerow(saida)
