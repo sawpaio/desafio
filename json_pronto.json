@@ -1,0 +1,6 @@
+{"index":{}}
+{"code": "1", "name": "Bitcoin", "priceUSD": "8,00", "change24H": "494.2", "change7D": "+3.40%", "symbol": "BTC", "priceBTC": "1", "priceReal": "32,8808", "marketCap": "$152.99B", "volume24H": "$20.17B", "totalVolume": "29.40%"}
+{"index":{}}
+{"code": "2", "name": "Ethereum", "priceUSD": "191,31", "change24H": "+0.26%", "change7D": "+9.20%", "symbol": "ETH", "priceBTC": "0.0225198", "priceReal": "786,303231", "marketCap": "$20.71B", "volume24H": "$9.20B", "totalVolume": "13.40%"}
+{"index":{}}
+{"code": "3", "name": "XRP", "priceUSD": "0,27289", "change24H": "-3.61%", "change7D": "+10.37%", "symbol": "XRP", "priceBTC": "0.00003211", "priceReal": "1,121605189", "marketCap": "$11.79B", "volume24H": "$1.51B", "totalVolume": "2.20%"}
